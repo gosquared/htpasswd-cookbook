@@ -29,7 +29,7 @@ def create_or_update_identity(htpasswd_file)
     code %{
       if [[ $(grep -c #{new_resource.name} #{htpasswd_file}) > 0 ]]
       then
-        sed -i 's|#{new_resource.name}.*|#{new_resource.identity}|g' #{htpasswd_file}
+        sed -i 's|#{new_resource.name}:.*|#{new_resource.identity}|g' #{htpasswd_file}
       else
         echo "#{new_resource.identity}" >> #{htpasswd_file}
       fi
@@ -37,10 +37,10 @@ def create_or_update_identity(htpasswd_file)
   end
 end
 
-def delete_identity(file)
+def delete_identity(htpasswd_file)
   bash "Removing #{new_resource.name} htpasswd identity in #{htpasswd_file}" do
     code %{
-      sed -i '|#{new_resource.name}.*| d' #{htpasswd_file}
+      sed -i '\\|#{new_resource.name}:.*| d' #{htpasswd_file}
     }
   end
 end
