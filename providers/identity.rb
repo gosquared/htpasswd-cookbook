@@ -40,7 +40,11 @@ end
 def delete_identity(htpasswd_file)
   bash "Removing #{new_resource.name} htpasswd identity in #{htpasswd_file}" do
     code %{
-      sed -i '\\|#{new_resource.name}:.*| d' #{htpasswd_file}
+      if [ -e #{htpasswd_file} ]
+      then
+        sed -i '\\|#{new_resource.name}:.*| d' #{htpasswd_file}
+      fi
+      exit 0
     }
   end
 end
