@@ -31,7 +31,7 @@ def create_or_update_identity(htpasswd_file)
       then
         sed -i 's|#{new_resource.name}:.*|#{new_resource.identity}|g' #{htpasswd_file}
       else
-        echo "#{new_resource.identity}" >> #{htpasswd_file}
+        echo '#{new_resource.identity}' >> #{htpasswd_file}
       fi
     }
   end
