@@ -1,0 +1,48 @@
+---
+driver:
+  name: vagrant
+  customize:
+    memory: 1024
+    cpus: 2
+
+
+
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos-6.5
+
+suites:
+  - name: default
+    run_list:
+      - recipe[htpasswd]
+
+    attributes: {
+      htpasswd: {
+        dir: "/etc/passwords",
+        action: "install",
+        identities: [
+        {
+           name: "admin",
+           password: "admin",
+           files: ["foo.htpasswd", "bar.htpasswd"],
+           type: "md5"
+        },
+        {
+           name: "foo",
+           password: "foo",
+           files: ["foo.htpasswd"],
+           type: "des"
+        },
+        {
+           name: "bar",
+           password: "bar",
+           files: ["bar.htpasswd"],
+           type: "apache-md5"
+        }
+        ]
+      }
+
+    }
